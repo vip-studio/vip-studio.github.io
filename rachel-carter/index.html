@@ -1,0 +1,223 @@
+<html>
+    <head>
+        <title>SITP sonic map</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta charset="utf-8">
+
+
+        <style>
+
+        #present {
+          position:relative;
+          overflow: hidden;
+height: 840px;
+width:1200px;
+
+        }
+          #map {
+            position: absolute;
+              top: 0;
+              left: 0;
+  background-image: url("images/cotton.jpg");
+  z-index: 1000;
+
+}
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <h1>SITP sonic map</h1>
+
+        <p>This is an interactive spatialised audio experience. Tested and working on: Chrome, Firefox and Safari. Touch screen devices currently unsupported. Rough around the edges, lots of opportunities for development, proof-of-concept.</p>
+
+        <ol>
+
+
+	        <li>Listen with headphones</li>
+	        <li><strong>Set your volume to low before you start</strong> (then turn it up if you need to)</li>
+	        <li>Click anywhere on the map to start exploring</li>
+	        <li>Move your mouse/trackpad cursor around the map to explore the soundscape</li>
+	        <li>Click anywhere on the map again to stop the audio</li>
+        </ol>
+
+
+  <p>listener x: <span id="x"></span> listener y: <span id="y"></span></p>
+  <p><span id="status"></span></p>
+  <div id="present">
+
+        <canvas id="map" height="840" width="1200">
+  </canvas>
+</div>
+    	<script>
+
+// THE WEB AUDIO STUFF:
+
+// Setup web audio context for all/most browsers
+
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+this.audioContext = new AudioContext();
+
+// Setup the listener and canvas element
+
+var listener = audioContext.listener;
+
+var canvas = document.getElementById("map");
+var context = canvas.getContext("2d");
+
+
+function audioFileLoader(fileDirectory) {
+  var soundObj = {};
+  var playSound = undefined;
+  var panner = undefined;
+  var gainNode = undefined;
+  var getSound = new XMLHttpRequest();
+  soundObj.fileDirectory = fileDirectory;
+  getSound.open("GET", soundObj.fileDirectory, true);
+  getSound.responseType = "arraybuffer";
+  getSound.onload = function() {
+audioContext.decodeAudioData(getSound.response, function(buffer) { soundObj.soundToPlay = buffer;
+}); };
+  getSound.send();
+
+  // Setup and create the functions to expose the Panner (replace with resonance audio panner!)
+
+  panner = audioContext.createPanner();
+  panner.panningModel = 'HRTF';
+  panner.distanceModel = 'exponential';
+  panner.maxDistance = 100000;
+  panner.refDistance = 5;
+
+gainNode = audioContext.createGain();
+gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+
+  soundObj.position = function(x,y,z) {
+	  panner.setPosition(x,y,z);
+  };
+
+
+  soundObj.play = function(time) {
+    playSound = audioContext.createBufferSource();
+    playSound.buffer = soundObj.soundToPlay;
+    playSound.loop = true;
+
+    playSound.connect(panner);
+    panner.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    playSound.start(audioContext.currentTime + time ||
+      audioContext.currentTime);
+  };
+  soundObj.stop = function(time) {
+    playSound.stop(audioContext.currentTime + time || audioContext.
+      currentTime);
+  };
+  return soundObj;
+}
+function audioBatchLoader(obj) {
+  for (var prop in obj) {
+    obj[prop] = audioFileLoader(obj[prop]);
+}
+return obj; }
+
+
+var sound = audioBatchLoader({
+
+	chatter: "samples/excited caribbean chatter.mp3",
+	cricket: "samples/cricket sounds.mp3",
+	bird: "samples/jamacian bird song.mp3",
+	grasses: "samples/praire grasses.mp3",
+	cane: "samples/sugar cane fields.mp3",
+
+});
+
+// Postion the sounds on the map (2D pixel coordinates)
+
+sound.chatter.position(140,174,0);
+sound.cricket.position(545,465,0);
+sound.bird.position(435,345,0);
+sound.grasses.position(500,375,0);
+sound.cane.position(725,460,0);
+
+
+// HERE'S THE MAP STUFF:
+
+// Define some global variables
+
+	    	var map = document.getElementById("map");
+	    	var status = document.getElementById("status");
+			var mapX = document.getElementById("x");
+			var mapY = document.getElementById("y");
+			var mouseX;
+			var mouseY;
+			var playing = false;
+
+// Get mouse coordinates on the map element
+
+			function updateCoords() {
+				mouseX = event.offsetX;
+				mouseY = event.offsetY;
+			}
+
+// Create mouse event functions
+
+			function moveAroundMap(event) {
+				updateCoords();
+				mapX.innerText = mouseX;
+				mapY.innerText = mouseY;
+				listener.setPosition(mouseX,mouseY,-20); // elevate the listener rather than lowering the sources
+			}
+
+			function leaveMap(event) {
+				updateCoords();
+				mapX.innerText = "";
+				mapY.innerText = "";
+				// Add audio fade out
+			}
+
+			function enterMap(event) {
+				updateCoords();
+				mapX.innerText = mouseX;
+				mapY.innerText = mouseY;
+				// Add audio fade in
+			}
+
+			map.addEventListener("mousemove", moveAroundMap, false);
+			map.addEventListener("mouseenter", enterMap, false);
+			map.addEventListener("mouseleave", leaveMap, false);
+
+			// click on map to start/stop playback
+
+
+			map.addEventListener("mousedown", function() {
+				if (!playing) {
+
+				sound.chatter.play();
+				sound.cricket.play();
+				sound.bird.play();
+				sound.grasses.play();
+				sound.cane.play();
+
+				playing = true;
+
+
+				} else {
+
+				sound.chatter.stop();
+				sound.cricket.stop();
+				sound.bird.stop();
+				sound.grasses.stop();
+				sound.cane.stop();
+
+				playing = false;
+
+				}
+
+});
+
+	   </script>
+
+    </body>
+</html>
