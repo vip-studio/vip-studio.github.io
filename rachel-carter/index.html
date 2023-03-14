@@ -10,7 +10,7 @@
         #present {
           position:relative;
           overflow: hidden;
-height: 840px;
+height: 720px;
 width:1200px;
 
         }
@@ -19,8 +19,9 @@ width:1200px;
               top: 0;
               left: 0;
   background-image: url("images/cotton.jpg");
+		  background-size: 765px 510px;
   z-index: 1000;
-
+background-repeat: no-repeat;
 }
 
 
@@ -30,26 +31,14 @@ width:1200px;
 
     <body>
 
-        <h1>SITP sonic map</h1>
-
-        <p>This is an interactive spatialised audio experience. Tested and working on: Chrome, Firefox and Safari. Touch screen devices currently unsupported. Rough around the edges, lots of opportunities for development, proof-of-concept.</p>
-
-        <ol>
+       
 
 
-	        <li>Listen with headphones</li>
-	        <li><strong>Set your volume to low before you start</strong> (then turn it up if you need to)</li>
-	        <li>Click anywhere on the map to start exploring</li>
-	        <li>Move your mouse/trackpad cursor around the map to explore the soundscape</li>
-	        <li>Click anywhere on the map again to stop the audio</li>
-        </ol>
-
-
-  <p>listener x: <span id="x"></span> listener y: <span id="y"></span></p>
+  <p>listener position: <span id="x"></span>, <span id="y"></span></p>
   <p><span id="status"></span></p>
   <div id="present">
 
-        <canvas id="map" height="840" width="1200">
+        <canvas id="map" height="720" width="1200">
   </canvas>
 </div>
     	<script>
@@ -135,11 +124,11 @@ var sound = audioBatchLoader({
 
 // Postion the sounds on the map (2D pixel coordinates)
 
-sound.chatter.position(140,174,0);
-sound.cricket.position(545,465,0);
-sound.bird.position(435,345,0);
-sound.grasses.position(500,375,0);
-sound.cane.position(725,460,0);
+sound.chatter.position(148,220,0);
+sound.cricket.position(645,180,0);
+sound.bird.position(540,280,0);
+sound.grasses.position(135,360,0);
+sound.cane.position(655,400,0);
 
 
 // HERE'S THE MAP STUFF:
