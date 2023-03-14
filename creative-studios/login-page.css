@@ -1,0 +1,150 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: #000;
+  background-image: url("background.jpg");
+  background-repeat: no-repeat;
+  
+}
+
+#main-holder {
+  width: auto;
+  height: auto;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  color:white;
+  padding:20px;
+  margin:20px;
+  
+}
+
+#main-holder img {
+  width:350px;
+}
+
+#login-error-msg-holder {
+  width:350px;
+}
+
+#login-error-msg {
+  
+  text-align: center;
+  
+  font-size: 12px;
+  
+  color: #fff;
+  
+}
+
+#error-msg-second-line {
+  display: block;
+}
+
+#login-form {
+  align-self: flex-start;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.login-form-field::placeholder {
+  color: #3a3a3a;
+}
+
+#username-field, #password-field {
+  border: none;
+  width:100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  outline: none;
+  padding: 10px;
+}
+
+#login-form-submit {
+  width: 100%;
+  padding:10px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  background-color: #53236D;
+  cursor: pointer;
+  outline: none;
+}
+button {
+  width: 100%;
+  padding:10px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  background-color: #53236D;
+  cursor: pointer;
+  outline: none;
+  margin-bottom:20px;
+}
+
+
+
+/* CSS */
+.button-36 {
+  background-image: linear-gradient(92.88deg, #50226D 9.16%, #863981 43.89%, #50226D 64.72%);
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  text-align: center;
+  
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-36:hover {
+  box-shadow: rgba(80, 34, 109, 0.5) 0 1px 30px;
+  transition-duration: .1s;
+}
+
+@media (min-width: 768px) {
+  .button-36 {
+    padding: 0 0.5rem;
+  }
+}
+
+a, a:hover, a:visited {
+  color:#fff;
+}
+
+
+
+.button-36 a {
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  color:#fff;
+  text-decoration: none;
+  line-height: 2.5rem;
+  padding: 0 0.5rem;
+}
+
+.logout {
+  font-size:11px;
+}
